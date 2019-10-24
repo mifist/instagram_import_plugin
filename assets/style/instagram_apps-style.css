@@ -152,9 +152,7 @@
         height: 100%;
         position: relative;
         background-size: cover !important;
-        transition: 0.5s;
-        object-fit: cover;
-        object-position: center; }
+        transition: 0.5s; }
         #instagram-container .instagram-wrapper .grid .album-thumbnail:hover {
           transform: scale(0.95);
           transition: 0.5s; }
@@ -164,12 +162,11 @@
           width: 100%;
           height: 100%;
           top: 0;
-          left: 0;
-          object-fit: cover;
-          object-position: center; }
+          left: 0; }
           #instagram-container .instagram-wrapper .grid .album-thumbnail a img {
-            object-fit: cover;
-            object-position: center; }
+            object-fit: fill;
+            object-position: center;
+            display: block; }
       #instagram-container .instagram-wrapper .grid .label {
         background-color: #ffffff;
         position: absolute;

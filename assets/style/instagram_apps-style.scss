@@ -173,8 +173,6 @@
 				position: relative;
 				background-size: cover !important;
 				transition: 0.5s;
-				object-fit: cover;
-				object-position: center;
 				&:hover {
 					transform: scale(.95);
 					transition: 0.5s;
@@ -186,11 +184,10 @@
 					height: 100%;
 					top: 0;
 					left: 0;
-					object-fit: cover;
-					object-position: center;
 					img {
-						object-fit: cover;
+						object-fit: fill;
 						object-position: center;
+						display: block;
 					}
 				}
 			}
