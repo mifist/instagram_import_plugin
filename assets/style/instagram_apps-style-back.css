@@ -1,0 +1,242 @@
+#instagram_page {
+  margin-top: 30px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap; }
+  #instagram_page:before, #instagram_page:after {
+    content: '';
+    clear: both;
+    display: table; }
+  #instagram_page .instagram_apps-title, #instagram_page h1, #instagram_page h2, #instagram_page h3, #instagram_page h4, #instagram_page h5, #instagram_page h6, #instagram_page .msg-success {
+    font-family: 'ProximaNova', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    color: #013755;
+    line-height: 24px;
+    letter-spacing: .5px;
+    flex: 1 0 100%; }
+  #instagram_page h2 {
+    font-size: 24px; }
+  #instagram_page h3 {
+    font-size: 22px; }
+  #instagram_page h4 {
+    font-size: 20px; }
+  #instagram_page h5 {
+    font-size: 18px; }
+  #instagram_page h6 {
+    font-size: 16px; }
+
+#instagram_options_form,
+#instagram_update_insta {
+  margin-bottom: 4%;
+  margin-top: 15px;
+  flex: 10;
+  width: 100%;
+  padding-right: 15px; }
+  #instagram_options_form .form-table th,
+  #instagram_update_insta .form-table th {
+    width: 140px;
+    font-weight: bold;
+    text-align: right; }
+  #instagram_options_form th, #instagram_options_form tr, #instagram_options_form td,
+  #instagram_update_insta th,
+  #instagram_update_insta tr,
+  #instagram_update_insta td {
+    font-family: 'ProximaNova', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #013755;
+    line-height: 24px; }
+    #instagram_options_form th span, #instagram_options_form tr span, #instagram_options_form td span,
+    #instagram_update_insta th span,
+    #instagram_update_insta tr span,
+    #instagram_update_insta td span {
+      font-style: italic;
+      color: #013755;
+      font-weight: 400;
+      font-size: 14px;
+      padding: 5px 10px;
+      display: block; }
+  #instagram_options_form input,
+  #instagram_update_insta input {
+    width: 100%;
+    border-radius: 3px;
+    padding: .5vmin 1vmin;
+    font-family: 'ProximaNova', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #013755;
+    line-height: 24px;
+    transition: all .3s; }
+    #instagram_options_form input:focus,
+    #instagram_update_insta input:focus {
+      border-color: #00aad4;
+      box-shadow: 0 0 2px rgba(0, 170, 212, 0.8); }
+  #instagram_options_form p.submit,
+  #instagram_update_insta p.submit {
+    margin-top: 4vmin; }
+  #instagram_options_form button,
+  #instagram_options_form input[type="submit"],
+  #instagram_update_insta button,
+  #instagram_update_insta input[type="submit"] {
+    background: #00aad4;
+    color: #fff;
+    border: 1px solid #00aad4;
+    font-size: 18px;
+    border-radius: 4px;
+    transition: all .3s;
+    display: block;
+    max-width: 200px;
+    width: 100%;
+    text-transform: inherit;
+    box-shadow: 4px 4px 10px 0 #96a4ad;
+    margin-top: 0;
+    padding: 15px;
+    outline: none !important;
+    text-shadow: none;
+    height: auto;
+    float: right; }
+    #instagram_options_form button:hover,
+    #instagram_options_form input[type="submit"]:hover,
+    #instagram_update_insta button:hover,
+    #instagram_update_insta input[type="submit"]:hover {
+      outline: none !important;
+      background: #fff;
+      color: #00aad4 !important;
+      border: 1px solid #00aad4 !important;
+      box-shadow: 4px 4px 10px 0 rgba(150, 164, 173, 0.5);
+      border-radius: 3px;
+      font-size: 18px;
+      cursor: pointer; }
+
+#instagram_update_insta {
+  max-width: 25%;
+  width: 100%;
+  padding-left: 30px;
+  padding-right: 30px; }
+  #instagram_update_insta h2 {
+    margin-bottom: 10px; }
+  #instagram_update_insta span {
+    font-style: italic;
+    color: #013755;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 5px 10px;
+    display: block;
+    text-align: center; }
+  #instagram_update_insta button,
+  #instagram_update_insta input[type="submit"] {
+    max-width: 100%;
+    margin-top: 2%;
+    margin-bottom: 10px; }
+
+#instagram_update_loader {
+  min-height: 60px;
+  display: flex;
+  width: 100%;
+  position: relative; }
+
+#instagram_update_time {
+  font-family: 'ProximaNova', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #98c961;
+  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  #instagram_update_time .update_time {
+    background: transparent;
+    border: none;
+    outline: none;
+    pointer-events: none;
+    font-family: 'ProximaNova', sans-serif;
+    font-size: 16px;
+    font-style: italic;
+    display: block;
+    padding: 0;
+    line-height: 1;
+    box-shadow: none;
+    margin: 0;
+    text-align: center; }
+
+.msg-success {
+  margin: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #98c961 !important; }
+
+#cly_task_id_field {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  margin: 10px auto 15px 0; }
+
+.field-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  margin-top: 10px; }
+  .field-row label,
+  .field-row .label {
+    margin-right: 15px;
+    display: flex;
+    align-items: center; }
+  .field-row input {
+    width: 100%; }
+  .field-row img {
+    display: block;
+    width: 20px;
+    height: auto; }
+
+.app-loading {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  opacity: 1; }
+
+.spinner-load {
+  height: 50px;
+  width: 50px;
+  animation: rotate 2s linear infinite;
+  transform-origin: center center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto; }
+
+.spinner-load .path {
+  stroke-dasharray: 1, 100;
+  stroke-dashoffset: 0;
+  animation: dash 1.5s ease-in-out infinite;
+  stroke-linecap: round;
+  stroke: #98c961; }
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg); } }
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0; }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px; }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px; } }
+
+/*# sourceMappingURL=instagram_apps-style-back.css.map */

@@ -1,0 +1,11 @@
+How to register a new app on Instagram
+Video
+https://www.useloom.com/share/9722a116acf54e3994b5045087d99959 
+URL you need
+https://www.instagram.com/developer/
+
+Getting a tocken
+Video
+https://www.useloom.com/share/b472fa6c764240c0b0887148ebb11c4f 
+URL you need
+https://www.instagram.com/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=token
