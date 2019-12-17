@@ -32,6 +32,7 @@ class InstagramImportClass  {
 		$this->endpoint = 'https://www.instagramapi.com/v3';
 		$this->oauth_endpoint = 'https://www.instagram.com/oauth';
 		$this->shortcode = 'instagram_apps_output';
+		$this->shortcode_new = 'instagram_apps_output_new';
 		$this->post_type = 'insta';
 		
 		// create post_type
@@ -40,7 +41,8 @@ class InstagramImportClass  {
 		add_action( 'admin_menu', array( $this, 'add_instagram_apps_settings'));
 		add_action( 'admin_menu', array( $this, 'hide_add_new_custom_type'));
 		add_action( 'admin_init', array( $this, 'create_option' ) );
-		add_shortcode( 'instagram_apps_output', array( $this, 'instagram_apps_output' ) );
+		add_shortcode( $this->shortcode, array( $this, 'instagram_apps_output' ) );
+		add_shortcode( $this->shortcode_new, array( $this, 'instagram_apps_output_new' ) );
 		
 		// wp cron
 		add_action( 'init', array( $this, 'add_new_knm_cron' ) );
@@ -65,6 +67,11 @@ class InstagramImportClass  {
 		// ajax for back
 		add_action( 'wp_ajax_instagram_update', array( $this, 'knm_parse_instagram' ) );
 		add_action( 'wp_ajax_nopriv_instagram_update', array( $this, 'knm_parse_instagram' ) );
+		
+		// test
+		add_action( 'wp_ajax_instagram_update_test', array( $this, 'knm_parse_instagram_test' ) );
+		add_action( 'wp_ajax_nopriv_instagram_update_test', array( $this, 'knm_parse_instagram_test' ) );
+		
 		// ajax for shortcodes
 		add_action( 'wp_ajax_knm_instagram_load_more', array( $this, 'load_more_insta_posts_shortcode' ) );
 		add_action( 'wp_ajax_nopriv_knm_instagram_load_more', array( $this, 'load_more_insta_posts_shortcode' ) );
@@ -372,8 +379,23 @@ class InstagramImportClass  {
 		setcookie( "last_update_instagram", time(), time()+30*24*60*60 );
 		return $json_feed;
 	}
-
 	
+	protected function instagram_apps_api_connect_test(){
+		$token = get_option('token');
+		// Get photos from Instagram
+		$url = 'https://api.instagram.com/v1/users/self/media/recent/?access_token='.$token;
+		
+		$args = stream_context_create(array(
+			'http' =>
+				array(
+					'timeout' => 2500,
+				)
+		));
+		$insta_result = file_get_contents($url, false, $args);
+		$json_feed = json_decode($insta_result);
+		setcookie( "last_update_instagram", time(), time()+30*24*60*60 );
+		return $json_feed;
+	}
 	
 	/**
 	 * Helper Functions
@@ -441,8 +463,7 @@ class InstagramImportClass  {
 	 * */
 	public function knm_parse_instagram() {
 		$app_instas = $this->instagram_apps_api_connect();
-		var_dump($app_instas->data);
-		
+		//var_dump($app_instas->data);
 		$tags = preg_replace('/^#/', '', get_option('hashtag'));
 		
 		foreach ( $app_instas->data as $post ):
@@ -530,7 +551,96 @@ class InstagramImportClass  {
 		exit();
 	}
 	
-	
+	public function knm_parse_instagram_test() {
+		$app_instas = $this->instagram_apps_api_connect_test();
+		var_dump($app_instas->data);
+		
+		$tags = preg_replace('/^#/', '', get_option('hashtag'));
+		
+		foreach ( $app_instas->data as $post ):
+			$post_id = $post->id;
+			$created_time = $post->created_time;
+			$post_title = $post->caption->text ? $post->caption->text : $post->name->html;
+			$slug = $post_id ? $post_id : sanitize_title($post_title);
+			$post_url = $post->link;
+			
+			if (!$this->insta_slug_exists($post_id)) {
+				foreach ($post->tags as $tag):
+					$current_tags = implode(', ', $post->tags);
+					if ($tag == $tags):
+						$new_post = wp_insert_post( array(
+							'post_content' => '',
+							'post_date'     => date("Y-m-d H:i:s", $post->created_time),
+							'post_date_gmt' => date("Y-m-d H:i:s", $post->created_time),
+							'post_title'    => $post_title,
+							'post_status'   => 'publish',
+							'post_type'     => $this->post_type,
+							'post_name'     => $slug
+						), true );
+						
+						// Update the data.
+						$post_id ? update_post_meta( $new_post, '_insta_id_key', $post_id ) : false;
+						$post_url ? update_post_meta( $new_post, '_insta_main_url_key', $post_url ) : false;
+						$current_tags ? update_post_meta( $new_post, '_insta_hashtag_key', $current_tags ) : false;
+						
+						$url = $post->images->standard_resolution->url;
+						$post_id = $new_post;
+						$desc = " ";
+						
+						$img_tag = media_sideload_image($url, $post_id, $desc, 'id');
+						
+						if (is_wp_error($img_tag)):
+							echo $img_tag->get_error_message();
+						else :
+							set_post_thumbnail($post_id, $img_tag);
+						endif;
+					
+					endif;
+				endforeach;
+				
+			} else {
+				
+				foreach ($post->tags as $tag):
+					$current_tags = implode(', ', $post->tags);
+					if ($tag == $tags):
+						$existent_post_id = $this->insta_id_exists($post_id)->post_id;
+						
+						$new_existent_post = wp_update_post( array(
+							'post_content'      => '',
+							'ID'                => $existent_post_id,
+							'post_date'         => date("Y-m-d H:i:s", $post->created_time),
+							'post_date_gmt'     => date("Y-m-d H:i:s", $post->created_time),
+							'post_title'        => $post_title,
+							'post_status'       => 'publish',
+							'post_type'         => $this->post_type,
+							'post_name'         => $slug,
+						), true );
+						
+						// Update the data.
+						$post_id ? update_post_meta( $new_existent_post, '_insta_id_key', $post_id ) : false;
+						$post_url ? update_post_meta( $new_existent_post, '_insta_main_url_key', $post_url ) : false;
+						$current_tags ? update_post_meta( $new_existent_post, '_insta_hashtag_key', $current_tags ) : false;
+						
+						$url = $post->images->standard_resolution->url;
+						$post_id = $new_existent_post;
+						$desc = " ";
+						
+						$img_tag = media_sideload_image($url, $post_id, $desc, 'id');
+						
+						if (is_wp_error($img_tag)):
+							echo $img_tag->get_error_message();
+						else :
+							set_post_thumbnail($post_id, $img_tag);
+						endif;
+					
+					endif;
+				endforeach;
+				
+			}
+		endforeach;
+		
+		exit();
+	}
 	
 	/**
 	 * AJAX/Shortcodes Functions
@@ -623,6 +733,19 @@ class InstagramImportClass  {
 	 * Output List of all Posts -> [instagram_apps_output]
 	 */
 	public function instagram_apps_output( $atts, $content = null, $tag ) {
+		ob_start();
+		$query_atts = shortcode_atts( array(
+			'hashtag' => '',
+		), $atts );
+		$this->get_query_insta_tmpl( $query_atts['hashtag'] );
+		$instagram_apps = ob_get_clean();
+		return $instagram_apps;
+	}
+	
+	/**
+	 * Output List of all Posts -> [instagram_apps_output_new]
+	 */
+	public function instagram_apps_output_new( $atts, $content = null, $tag ) {
 		ob_start();
 		$query_atts = shortcode_atts( array(
 			'hashtag' => '',
